@@ -1,0 +1,11 @@
+{
+  "name": "Nexus sidekick",
+  "description": "Autonomous enterprise AI meeting teammate and workspace agent built on Google Cloud Vertex AI with grounded knowledge search, live deliverable drafting, and proactive compliance guardrails.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

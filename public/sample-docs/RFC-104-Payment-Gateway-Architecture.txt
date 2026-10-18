@@ -1,0 +1,17 @@
+# RFC-104: Payment Gateway Architecture v2.4
+Document ID: RFC-104
+Classification: Internal
+Allowed Roles: eng-core, security, leadership
+Author: Payments Core Architecture Guild
+
+## 1. Executive Summary & Scope
+This document specifies standard architectural guidelines for all distributed payment processing, payment tokenization, and idempotent mutation flows across regional enclaves. All merchant-facing checkout services must route card processing through regional gateway proxies. Direct peer-to-peer ingress into banking settlement networks is strictly prohibited.
+
+## 2. Tokenization and Idempotency Policy
+For European Union and North American credit card settlements, payment tokenization requests must utilize deterministic idempotent mutation keys (SHA-256 hash of idempotency_token + merchant_id).
+When downstream Payment Service Provider (PSP) timeout exceeds 1,200ms, clients must apply exponential backoff (base 200ms, jitter 0.2, maximum 3 attempts) strictly within the Frankfurt (europe-west3) or Iowa (us-central1) isolated enclave before raising an unrecoverable settlement fault.
+
+Clause 3.2: Idempotency mutation keys must terminate within regional enclaves; uncommitted ledger locks must auto-revert within 3,000ms.
+
+## 3. Storage and Payload Rules
+Raw primary account numbers (PAN) must never enter persistent storage. PAN data may only exist in volatile enclave memory during tokenization. All logs must mask card numbers preserving only the last four digits.

@@ -1,0 +1,6 @@
+{
+  "summary": "Final refined implementation plan for Nexus Sidekick. Adds security to RFC-104 allowed_roles, defines shared-draft isolation over all invited participant roles to protect late joiners, specifies server-side audio streaming into Cloud STT with live mic as a stretch, positions Google Calendar actions as a stretch item below the cut line, and adds baseline tester attribution flexibility.",
+  "updatedAt": "2026-10-13T09:40:36.124670842Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

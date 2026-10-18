@@ -1,0 +1,17 @@
+# POL-SEC-12: Corporate Key Custody & Hardware Security Module (HSM) Policy
+Document ID: POL-SEC-12
+Classification: Restricted
+Allowed Roles: security, leadership
+Author: Enterprise Information Security Office
+
+## 1. Scope and Authority
+This policy governs cryptographic key generation, custody, rotation, and hardware security module requirements. This policy is RESTRICTED and only accessible to Enterprise Security and Executive Leadership personnel.
+
+## 2. Key Custody and KMS Architecture
+All production cryptographic keys used for signing, symmetric data encryption, or tokenization must be hosted in FIPS 140-2 Level 3 certified Cloud Hardware Security Modules (Cloud HSM).
+Zero-custody rule: No individual engineer, operator, or administrator shall possess exportable private keys. All key operations must occur over authenticated envelope encryption APIs.
+
+Clause 4.1: Export of root keying material or symmetric key export without dual-custody authorization signed by the CISO and Lead Cryptographer is strictly prohibited and results in immediate automated credential revocation.
+
+## 3. Rotation Schedules
+Master keys must automatically rotate every 90 days. Intermediate data encryption keys (DEKs) must rotate every 24 hours or after processing 1,000,000 transactions, whichever occurs first.

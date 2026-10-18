@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+    
+    function getUserEmail() {
+      return request.auth.token.email.lower();
+    }
+
+    function isOrgAdmin(orgId) {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/orgs/$(orgId)/members/$(getUserEmail())) &&
+        get(/databases/$(database)/documents/orgs/$(orgId)/members/$(getUserEmail())).data.role == 'admin';
+    }
+
+    // Clients cannot write org, member, group, or document docs (the server writes)
+    match /orgs/{orgId} {
+      allow read: if isAuthenticated() && exists(/databases/$(database)/documents/orgs/$(orgId)/members/$(getUserEmail()));
+      allow write: if false;
+
+      // A user can read only their own member doc; admins can read their org's members
+      match /members/{memberEmail} {
+        allow read: if isAuthenticated() && (
+          memberEmail == getUserEmail() || isOrgAdmin(orgId)
+        );
+        allow write: if false;
+      }
+
+      // Admins can read their org's groups
+      match /groups/{groupId} {
+        allow read: if isOrgAdmin(orgId);
+        allow write: if false;
+      }
+
+      // Clients cannot write or read documents directly (the server writes and verifies group ACL)
+      match /documents/{docId} {
+        allow read: if false;
+        allow write: if false;
+      }
+    }
+  }
+}

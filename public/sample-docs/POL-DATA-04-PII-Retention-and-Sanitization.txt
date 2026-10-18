@@ -1,0 +1,15 @@
+# POL-DATA-04: Customer PII Data Retention & Sanitization Standard
+Document ID: POL-DATA-04
+Classification: Internal
+Allowed Roles: eng-core, security, leadership
+Author: Data Privacy & Compliance Board
+
+## 1. Scope
+Applies to all customer personally identifiable information (PII), payment transaction identifiers, phone numbers, and government-issued credentials stored across enterprise databases.
+
+## 2. Retention Limits
+1. Customer transaction audit logs: Retained for maximum 90 days in cold storage.
+2. Temporary processing buffers: Must be purged within 48 hours of settlement completion.
+3. Diagnostic telemetry: Must run through Cloud DLP redaction before ingestion into analytics or BigQuery data warehouses.
+
+Clause 2.3: Failure to redact customer tax IDs, credit card numbers, or social security numbers prior to warehouse persistence triggers an automated export lock on related services and notification to the Data Protection Officer.
